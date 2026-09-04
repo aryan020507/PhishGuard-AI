@@ -10,6 +10,7 @@ from backend.app.config import SQLITE_DB_PATH
 
 
 def get_connection() -> sqlite3.Connection:
+    SQLITE_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(SQLITE_DB_PATH), check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
@@ -17,19 +18,23 @@ def get_connection() -> sqlite3.Connection:
 
 def init_db():
     """Create scan records table if not already existing."""
-    with get_connection() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS scan_records (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                scan_type TEXT NOT NULL,
-                input_preview TEXT NOT NULL,
-                probability REAL NOT NULL,
-                risk_level TEXT NOT NULL,
-                confidence REAL NOT NULL,
-                timestamp TEXT NOT NULL
-            )
-        """)
-        conn.commit()
+    try:
+        with get_connection() as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS scan_records (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    scan_type TEXT NOT NULL,
+                    input_preview TEXT NOT NULL,
+                    probability REAL NOT NULL,
+                    risk_level TEXT NOT NULL,
+                    confidence REAL NOT NULL,
+                    timestamp TEXT NOT NULL
+                )
+            """)
+            conn.commit()
+    except Exception:
+        # Non-fatal if filesystem is restricted or read-only
+        pass
 
 
 def log_scan(

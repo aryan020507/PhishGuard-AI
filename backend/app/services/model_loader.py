@@ -178,10 +178,14 @@ class ModelManager:
 
     @property
     def is_url_ready(self) -> bool:
+        if not (self.loaded_status["url_ann"] and self.loaded_status["url_scaler"]):
+            self.load_all_models()
         return bool(self.loaded_status["url_ann"] and self.loaded_status["url_scaler"])
 
     @property
     def is_message_ready(self) -> bool:
+        if not (self.loaded_status["message_rnn"] and self.loaded_status["message_tokenizer"]):
+            self.load_all_models()
         return bool(self.loaded_status["message_rnn"] and self.loaded_status["message_tokenizer"])
 
     def predict_url(self, raw_features_1d: np.ndarray) -> float:

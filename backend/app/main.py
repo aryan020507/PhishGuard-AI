@@ -29,10 +29,16 @@ logger = logging.getLogger("phishguard.app")
 async def lifespan(app: FastAPI):
     """Lifecycle manager: Initialize DB and load ML models on startup."""
     logger.info("Initializing PhishGuard-AI application lifecycle...")
-    # Initialize SQLite database
-    init_db()
-    # Load ML models and preprocessing pipelines once on startup
-    ModelManager.get_instance().load_all_models()
+    try:
+        init_db()
+    except Exception as e:
+        logger.warning(f"History DB initialization warning (non-fatal): {e}")
+
+    try:
+        ModelManager.get_instance().load_all_models()
+    except Exception as e:
+        logger.error(f"ModelManager startup load warning (non-fatal): {e}")
+
     logger.info("Application startup sequence completed successfully.")
     yield
     logger.info("PhishGuard-AI application shutting down.")
@@ -109,13 +115,18 @@ app.include_router(api_router)
 
 
 # Mount static frontend directory
-if FRONTEND_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+static_dir = FRONTEND_DIR / "static" if (FRONTEND_DIR / "static").exists() else FRONTEND_DIR
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
-    @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
-    async def serve_index():
-        """Serve the frontend SPA entry point."""
-        index_file = FRONTEND_DIR / "index.html"
-        if index_file.exists():
-            return FileResponse(str(index_file))
-        return JSONResponse({"status": "Frontend not found"}, status_code=404)
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+async def serve_index():
+    """Serve the frontend SPA entry point."""
+    for candidate in [
+        FRONTEND_DIR / "index.html",
+        PROJECT_ROOT / "public" / "index.html",
+        PROJECT_ROOT / "frontend" / "index.html",
+    ]:
+        if candidate.exists():
+            return FileResponse(str(candidate))
+    return JSONResponse({"status": "Frontend not found"}, status_code=404)
