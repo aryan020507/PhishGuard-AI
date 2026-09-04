@@ -1,0 +1,11 @@
+.venv
+.tools
+.git
+.pytest_cache
+__pycache__
+*.py[cod]
+tests
+training/datasets
+scans_history.db
+models/*.keras
+requirements-train.txt

@@ -5,8 +5,8 @@ evaluates heuristic explanation cues, and generates a structured RiskAssessment.
 """
 
 import datetime
-from typing import Dict, Any
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from typing import Any
+import numpy as np
 
 from backend.app.schemas import MessageScanResponse, RiskAssessment
 from backend.app.services.model_loader import ModelManager
@@ -14,6 +14,24 @@ from backend.app.services.risk_engine import evaluate_risk
 from backend.app.services.explanation_engine import explain_message_threats
 from backend.app.services.history_service import log_scan
 from training.features.message_features import clean_text, MAX_SEQUENCE_LENGTH
+
+
+def _to_padded_sequence(cleaned_text: str, tokenizer_or_vocab: Any) -> np.ndarray:
+    if hasattr(tokenizer_or_vocab, "texts_to_sequences"):
+        seqs = tokenizer_or_vocab.texts_to_sequences([cleaned_text])
+        seq = seqs[0] if seqs else []
+    elif isinstance(tokenizer_or_vocab, dict):
+        words = cleaned_text.split()
+        oov_idx = tokenizer_or_vocab.get("<OOV>", 1)
+        seq = [tokenizer_or_vocab.get(w, oov_idx) for w in words]
+    else:
+        seq = []
+
+    if len(seq) > MAX_SEQUENCE_LENGTH:
+        padded = seq[:MAX_SEQUENCE_LENGTH]
+    else:
+        padded = seq + [0] * (MAX_SEQUENCE_LENGTH - len(seq))
+    return np.array(padded, dtype=np.int32)
 
 
 def analyze_message(message: str) -> MessageScanResponse:
@@ -32,8 +50,7 @@ def analyze_message(message: str) -> MessageScanResponse:
     # 3. Model Inference or Fallback
     if model_mgr.is_message_ready:
         tokenizer = model_mgr.message_tokenizer
-        seq = tokenizer.texts_to_sequences([cleaned])
-        padded = pad_sequences(seq, maxlen=MAX_SEQUENCE_LENGTH, padding="post", truncating="post")[0]
+        padded = _to_padded_sequence(cleaned, tokenizer)
         prob = model_mgr.predict_message(padded)
         model_loaded = True
         model_name = "Recurrent Neural Network (Embedding-SimpleRNN-Dense)"
