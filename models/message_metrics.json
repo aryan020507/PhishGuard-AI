@@ -1,0 +1,63 @@
+{
+  "model_name": "PhishGuard_Message_RNN",
+  "model_type": "Recurrent Neural Network (Embedding-SimpleRNN-Dropout-Dense-Sigmoid)",
+  "vocab_size": 5000,
+  "max_sequence_length": 100,
+  "split_counts": {
+    "train": 3900,
+    "validation": 836,
+    "test": 836,
+    "total": 5572
+  },
+  "test_metrics": {
+    "accuracy": 0.9844,
+    "precision": 0.9626,
+    "recall": 0.9196,
+    "f1_score": 0.9406,
+    "roc_auc": 0.9875,
+    "loss": 0.0863
+  },
+  "confusion_matrix": {
+    "true_negatives": 720,
+    "false_positives": 4,
+    "false_negatives": 9,
+    "true_positives": 103,
+    "raw_matrix": [
+      [
+        720,
+        4
+      ],
+      [
+        9,
+        103
+      ]
+    ]
+  },
+  "classification_report": {
+    "0.0": {
+      "precision": 0.9876543209876543,
+      "recall": 0.994475138121547,
+      "f1-score": 0.9910529938059188,
+      "support": 724.0
+    },
+    "1.0": {
+      "precision": 0.9626168224299065,
+      "recall": 0.9196428571428571,
+      "f1-score": 0.9406392694063926,
+      "support": 112.0
+    },
+    "accuracy": 0.9844497607655502,
+    "macro avg": {
+      "precision": 0.9751355717087804,
+      "recall": 0.957058997632202,
+      "f1-score": 0.9658461316061557,
+      "support": 836.0
+    },
+    "weighted avg": {
+      "precision": 0.984300014960779,
+      "recall": 0.9844497607655502,
+      "f1-score": 0.9842990020203364,
+      "support": 836.0
+    }
+  }
+}

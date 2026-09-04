@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  phishguard-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: phishguard-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - TF_CPP_MIN_LOG_LEVEL=2
+    volumes:
+      - ./scans_history.db:/app/scans_history.db
+      - ./models:/app/models
+    restart: unless-stopped

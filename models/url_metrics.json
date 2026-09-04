@@ -1,0 +1,79 @@
+{
+  "model_name": "PhishGuard_URL_ANN",
+  "model_type": "Artificial Neural Network (Dense-Dropout-Dense-Sigmoid)",
+  "input_features": [
+    "url_length",
+    "num_dots",
+    "num_hyphens",
+    "num_at",
+    "num_question_marks",
+    "num_equal_signs",
+    "num_slashes",
+    "num_digits",
+    "digit_ratio",
+    "has_https",
+    "has_ip",
+    "num_subdomains",
+    "suspicious_keywords_count",
+    "has_port",
+    "entropy",
+    "has_shortener"
+  ],
+  "split_counts": {
+    "train": 420,
+    "validation": 90,
+    "test": 90,
+    "total": 600
+  },
+  "test_metrics": {
+    "accuracy": 0.8889,
+    "precision": 0.9268,
+    "recall": 0.8444,
+    "f1_score": 0.8837,
+    "roc_auc": 0.9768,
+    "loss": 0.1959
+  },
+  "confusion_matrix": {
+    "true_negatives": 42,
+    "false_positives": 3,
+    "false_negatives": 7,
+    "true_positives": 38,
+    "raw_matrix": [
+      [
+        42,
+        3
+      ],
+      [
+        7,
+        38
+      ]
+    ]
+  },
+  "classification_report": {
+    "0.0": {
+      "precision": 0.8571428571428571,
+      "recall": 0.9333333333333333,
+      "f1-score": 0.8936170212765957,
+      "support": 45.0
+    },
+    "1.0": {
+      "precision": 0.926829268292683,
+      "recall": 0.8444444444444444,
+      "f1-score": 0.8837209302325582,
+      "support": 45.0
+    },
+    "accuracy": 0.8888888888888888,
+    "macro avg": {
+      "precision": 0.89198606271777,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.8886689757545769,
+      "support": 90.0
+    },
+    "weighted avg": {
+      "precision": 0.8919860627177699,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.8886689757545768,
+      "support": 90.0
+    }
+  }
+}
