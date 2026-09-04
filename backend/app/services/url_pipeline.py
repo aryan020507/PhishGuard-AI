@@ -12,7 +12,10 @@ from backend.app.services.model_loader import ModelManager
 from backend.app.services.risk_engine import evaluate_risk
 from backend.app.services.explanation_engine import explain_url_threats
 from backend.app.services.history_service import log_scan
-from training.features.url_features import extract_url_features, url_to_feature_vector
+try:
+    from training.features.url_features import extract_url_features, url_to_feature_vector
+except ImportError:
+    from backend.app.features.url_features import extract_url_features, url_to_feature_vector
 
 
 def analyze_url(url: str) -> URLScanResponse:

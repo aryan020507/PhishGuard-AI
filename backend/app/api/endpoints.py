@@ -33,6 +33,7 @@ router = APIRouter()
 
 
 @router.api_route("/health", methods=["GET", "HEAD"], response_model=HealthResponse, tags=["System"])
+@router.api_route("/api/health", methods=["GET", "HEAD"], response_model=HealthResponse, tags=["System"])
 async def get_health():
     """
     Health check endpoint: returns application uptime, loaded models status, and safety disclaimer.

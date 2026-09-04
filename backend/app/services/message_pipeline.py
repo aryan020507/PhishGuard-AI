@@ -13,7 +13,10 @@ from backend.app.services.model_loader import ModelManager
 from backend.app.services.risk_engine import evaluate_risk
 from backend.app.services.explanation_engine import explain_message_threats
 from backend.app.services.history_service import log_scan
-from training.features.message_features import clean_text, MAX_SEQUENCE_LENGTH
+try:
+    from training.features.message_features import clean_text, MAX_SEQUENCE_LENGTH
+except ImportError:
+    from backend.app.features.message_features import clean_text, MAX_SEQUENCE_LENGTH
 
 
 def _to_padded_sequence(cleaned_text: str, tokenizer_or_vocab: Any) -> np.ndarray:
