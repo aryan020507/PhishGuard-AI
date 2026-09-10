@@ -12,6 +12,7 @@ from backend.app.services.model_loader import ModelManager
 from backend.app.services.risk_engine import evaluate_risk
 from backend.app.services.explanation_engine import explain_url_threats
 from backend.app.services.history_service import log_scan
+from backend.app.services.trusted_domains import is_authentic_trusted_url
 try:
     from training.features.url_features import extract_url_features, url_to_feature_vector
 except ImportError:
@@ -53,7 +54,15 @@ def analyze_url(url: str) -> URLScanResponse:
         model_loaded = False
         model_name = "Heuristic-Only Fallback (Model Not Loaded)"
 
-    # 4. Risk Engine Assessment
+    # 4. Verified Authority Safeguard
+    # If the domain is an authentic trusted authority (e.g. YouTube, Google, GitHub)
+    # and has no deceptive danger markers, prevent false positives.
+    if is_authentic_trusted_url(url, features_dict):
+        danger_count = sum(1 for ind in indicators if ind.severity == "danger")
+        if danger_count == 0:
+            prob = min(prob, 0.05)
+
+    # 5. Risk Engine Assessment
     risk = evaluate_risk(prob)
 
     # 5. Persist to History Database

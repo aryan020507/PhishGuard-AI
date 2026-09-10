@@ -11,6 +11,10 @@ import numpy as np
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 
 LEGIT_URLS = [
+    "https://www.youtube.com/",
+    "https://youtube.com",
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://google.com",
     "https://www.google.com/search?q=machine+learning",
     "https://github.com/torvalds/linux/commit/123456",
     "https://en.wikipedia.org/wiki/Artificial_intelligence",

@@ -5,9 +5,14 @@
 
 const URL_SAMPLES = [
   {
-    label: "Legit: Wikipedia",
+    label: "Legit: YouTube Video",
     type: "legit",
-    url: "https://en.wikipedia.org/wiki/Computer_security"
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    label: "Legit: Google Search",
+    type: "legit",
+    url: "https://www.google.com/search?q=open+source+security"
   },
   {
     label: "Legit: GitHub Repo",

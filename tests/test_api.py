@@ -28,11 +28,27 @@ def test_predict_url_legitimate(client):
     data = response.json()
     assert data["input_url"] == payload["url"]
     assert "risk" in data
-    assert data["risk"]["risk_level"] in ["LOW", "MEDIUM", "HIGH"]
+    assert data["risk"]["risk_level"] == "LOW"
     assert "features" in data
     assert len(data["features"]) == 16
     assert "indicators" in data
     assert data["model_loaded"] is True
+
+
+def test_predict_url_youtube_variants(client):
+    youtube_urls = [
+        "https://www.youtube.com/",
+        "https://youtube.com",
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "https://youtu.be/dQw4w9WgXcQ"
+    ]
+    for url in youtube_urls:
+        response = client.post("/api/v1/predict/url", json={"url": url})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["risk"]["risk_level"] == "LOW"
+        assert data["risk"]["probability"] < 0.40
+        assert any(ind["code"] == "URL_TRUSTED_DOMAIN" for ind in data["indicators"])
 
 
 def test_predict_url_phishing(client):

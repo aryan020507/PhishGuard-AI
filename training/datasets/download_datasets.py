@@ -94,7 +94,11 @@ def download_url_dataset() -> pd.DataFrame:
     # 2. Legitimate domains with realistic paths
     COMMON_BENIGN_PATHS = [
         "",
+        "",
+        "watch?v=dQw4w9WgXcQ",
         "search?q=open+source+software",
+        "explore",
+        "feed/trending",
         "docs/reference/api-overview.html",
         "wiki/Artificial_intelligence",
         "products/electronics/catalog",
@@ -111,8 +115,8 @@ def download_url_dataset() -> pd.DataFrame:
     ]
 
     POPULAR_DOMAINS = [
-        "google.com", "wikipedia.org", "github.com", "stackoverflow.com", "python.org",
-        "microsoft.com", "amazon.com", "bbc.com", "reddit.com", "coursera.org",
+        "youtube.com", "google.com", "wikipedia.org", "github.com", "stackoverflow.com", "python.org",
+        "microsoft.com", "amazon.com", "apple.com", "netflix.com", "bbc.com", "reddit.com", "coursera.org",
         "cloudflare.com", "mozilla.org", "w3schools.com", "nytimes.com", "arxiv.org",
         "cnn.com", "apache.org", "docker.com", "medium.com", "linkedin.com"
     ]
@@ -127,14 +131,17 @@ def download_url_dataset() -> pd.DataFrame:
             domains = list(df_gov[col_name].dropna().unique())
             all_domains = POPULAR_DOMAINS + [d.lower().strip() for d in domains]
 
-            # Construct standard HTTPS URLs with natural path distribution
+            # Construct standard HTTPS URLs with natural path and subdomain distribution
             import random
             random.seed(42)
             target_count = len(phish_urls) if phish_urls else 1000
             for i in range(target_count):
                 dom = all_domains[i % len(all_domains)]
                 path = random.choice(COMMON_BENIGN_PATHS)
-                full_url = f"https://www.{dom}/{path}" if path else f"https://www.{dom}/"
+                # 50% use www, 50% use apex domain (without www)
+                use_www = random.random() < 0.5
+                prefix = "https://www." if use_www else "https://"
+                full_url = f"{prefix}{dom}/{path}" if path else f"{prefix}{dom}/"
                 legit_urls.append(full_url)
 
             print(f"[OK] Fetched {len(legit_urls)} realistic legitimate URLs")

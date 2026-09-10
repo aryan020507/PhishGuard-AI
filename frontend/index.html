@@ -3,136 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhishGuard-AI | Cyber Threat Intelligence</title>
+  <title>PhishGuard AI | Threat Detection Platform</title>
+  <meta name="description" content="AI-powered zero-contact phishing and smishing threat detection platform. Analyze URLs and text messages safely without remote contact.">
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="dark-theme">
-  <!-- Top Navigation Header -->
+  <!-- Top Navigation Bar with 4 Options -->
   <header class="app-header">
     <div class="header-container">
-      <div class="logo-area">
+      <!-- Brand Logo Area -->
+      <div class="logo-area" onclick="switchTab('tab-home')" title="PhishGuard-AI Home">
         <div class="logo-shield">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
         <div class="brand-text">
           <span class="brand-title">PhishGuard<span class="highlight">-AI</span></span>
-          <span class="brand-subtitle">Dual-Pipeline Threat Intelligence</span>
+          <span class="brand-subtitle">Zero-Contact Security</span>
         </div>
       </div>
 
-      <nav class="nav-links">
-        <button class="nav-btn active" data-tab="tab-home">Home</button>
-        <button class="nav-btn" data-tab="tab-url">URL Scanner</button>
-        <button class="nav-btn" data-tab="tab-message">Message Scanner</button>
-        <button class="nav-btn" data-tab="tab-metrics">Model Performance</button>
-        <button class="nav-btn" data-tab="tab-history">Scan History</button>
-        <button class="nav-btn" data-tab="tab-about">Architecture</button>
+      <!-- 4 Navigation Options -->
+      <nav class="main-nav" aria-label="Main Navigation">
+        <button class="nav-btn active" data-tab="tab-home" id="nav-home">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-url" id="nav-url">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span>Scan URL</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-message" id="nav-message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <circle cx="9" cy="10" r="1" fill="currentColor"/>
+            <circle cx="12" cy="10" r="1" fill="currentColor"/>
+            <circle cx="15" cy="10" r="1" fill="currentColor"/>
+          </svg>
+          <span>Scan Messages</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-history" id="nav-history">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>History</span>
+        </button>
       </nav>
 
-      <div class="system-status-indicator" id="system-status-pill">
-        <span class="status-dot pulsing"></span>
-        <span class="status-text">Checking System...</span>
+      <!-- System Health Indicator -->
+      <div class="header-actions">
+        <div class="system-status-indicator" id="system-status-pill" title="Checking backend status...">
+          <span class="status-dot pulsing"></span>
+          <span class="status-text">Connecting...</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Container -->
+  <!-- Main View Container -->
   <main class="main-content">
-
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- TAB 1: HOME / DASHBOARD -->
+    <!-- =========================================================================
+         PAGE 1: HOME PAGE
+         Explains What it is & Why it is for + 2 Prominent Centered Hover Cards
+         ========================================================================= -->
     <section id="tab-home" class="tab-pane active">
-      <div class="hero-section">
-        <div class="hero-badge">Next-Generation Zero-Contact AI Defense</div>
-        <h1 class="hero-title">Protecting Users from Deceptive URLs & Social Engineering</h1>
-        <p class="hero-description">
-          PhishGuard-AI leverages two isolated, specialized machine learning pipelines: an Artificial Neural Network (ANN) trained on local static URL features and a Recurrent Neural Network (RNN) trained on linguistic cues. No submitted URL is ever executed or fetched.
-        </p>
-
-        <div class="hero-cta-group">
-          <button class="btn btn-primary" onclick="switchTab('tab-url')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            Scan URL Threat
-          </button>
-          <button class="btn btn-secondary" onclick="switchTab('tab-message')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Analyze Message / SMS
-          </button>
+      <div class="home-container">
+        <!-- Hero Intro -->
+        <div class="home-hero">
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Zero-Contact AI Cyber Defense
+          </div>
+          <h1 class="home-title">Threat Detection Platform</h1>
+          <p class="home-subtitle">
+            PhishGuard-AI safeguards you against malicious phishing links, spoofed websites, and deceptive SMS scams with instant, local neural intelligence.
+          </p>
         </div>
 
-        <div class="pipeline-feature-grid">
-          <div class="feature-card">
-            <div class="feature-icon blue">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            </div>
-            <h3>Pipeline A: Static URL ANN</h3>
-            <p>16 structural, statistical, and lexical features extracted strictly locally. Zero network queries prevent adversary fingerprinting or payload execution.</p>
-            <div class="card-meta-pill">Dense &bull; Dropout &bull; Sigmoid</div>
+        <!-- The 2 Main Choice Cards (Left: URL, Right: SMS) with Centered Logos & Hover Effects -->
+        <div class="choice-selection-wrapper">
+          <div class="choice-section-header">
+            <span class="choice-section-badge">Choose an Analysis Tool</span>
+            <p class="choice-section-hint">Hover over an option to preview and select</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon purple">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <div class="main-options-grid">
+            <!-- Left Option: Scan URL -->
+            <div class="choice-card choice-url" onclick="switchTab('tab-url')" role="button" tabindex="0" aria-label="Scan Website URL">
+              <div class="choice-card-glow"></div>
+              <div class="choice-icon-wrap cyan">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </div>
+              <h2 class="choice-title">Scan URL</h2>
+              <p class="choice-desc">
+                Inspect any destination website link, domain name, or URL. Detect fraudulent login portals, IP host masking, suspicious TLDs, and deceptive redirects safely.
+              </p>
+              <div class="choice-tags">
+                <span class="choice-tag">16 Static Features</span>
+                <span class="choice-tag">Zero-Contact</span>
+                <span class="choice-tag">ANN Model</span>
+              </div>
+              <div class="choice-btn">
+                <span>Scan a URL</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </div>
             </div>
-            <h3>Pipeline B: Message RNN</h3>
-            <p>Recurrent neural network with sequence embedding modeling temporal text structure to identify panic urgency, prize lures, and authority impersonation.</p>
-            <div class="card-meta-pill">Embedding &bull; SimpleRNN &bull; Dense</div>
-          </div>
 
-          <div class="feature-card">
-            <div class="feature-icon green">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <!-- Right Option: Scan Messages / SMS -->
+            <div class="choice-card choice-message" onclick="switchTab('tab-message')" role="button" tabindex="0" aria-label="Scan Messages and SMS">
+              <div class="choice-card-glow"></div>
+              <div class="choice-icon-wrap purple">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="12" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <h2 class="choice-title">Scan Messages / SMS</h2>
+              <p class="choice-desc">
+                Analyze text messages, SMS alerts, or emails for social engineering, artificial panic urgency deadlines, bank brand impersonation, and fraudulent prize lures.
+              </p>
+              <div class="choice-tags">
+                <span class="choice-tag">Smishing Detection</span>
+                <span class="choice-tag">Linguistic NLP</span>
+                <span class="choice-tag">RNN Model</span>
+              </div>
+              <div class="choice-btn">
+                <span>Scan an SMS</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </div>
             </div>
-            <h3>Heuristic Explainability</h3>
-            <p>Heuristic explanation engine flags human-readable indicators distinct from machine learning probabilities for transparent defense analysis.</p>
-            <div class="card-meta-pill">Transparent Indicator Badges</div>
           </div>
         </div>
 
-        <div class="philosophy-callout">
-          <div class="callout-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <!-- "What is This & Why It is For" Detailed Section -->
+        <div class="explainer-section">
+          <div class="explainer-header">
+            <h2 class="explainer-title">What is PhishGuard-AI &amp; Why It Exists</h2>
+            <p class="explainer-subtitle">Understanding modern threat vectors and zero-contact protection</p>
           </div>
-          <div class="callout-content">
-            <h4>Core Operational Philosophy</h4>
-            <p>Predictions are risk assessments, not absolute guarantees. Always verify suspicious communications through authentic, out-of-band channels. PhishGuard-AI never resolves DNS or initiates HTTP traffic to user-provided URLs.</p>
+
+          <div class="explainer-grid">
+            <div class="explainer-card">
+              <div class="explainer-icon-badge cyan">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <h3>What is PhishGuard-AI?</h3>
+              <p>
+                PhishGuard-AI is an intelligent cyber defense analyzer designed to evaluate suspicious web links and text messages before you open them. Combining an Artificial Neural Network (ANN) and a Recurrent Neural Network (RNN), it detects deceptive traps with sub-millisecond local inference.
+              </p>
+            </div>
+
+            <div class="explainer-card">
+              <div class="explainer-icon-badge purple">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <h3>Why is it Essential?</h3>
+              <p>
+                Over 80% of reported cyberattacks originate via phishing URLs or smishing (SMS phishing). Attackers impersonate trusted banks, postal couriers, and cloud services to harvest passwords, credit cards, and personal identities. PhishGuard-AI empowers you to verify safety instantly.
+              </p>
+            </div>
+
+            <div class="explainer-card">
+              <div class="explainer-icon-badge emerald">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h3>100% Zero-Contact Privacy</h3>
+              <p>
+                Standard online scanners often ping, resolve, or visit target URLs—alerting attackers, logging your IP, or triggering tracking webhooks. PhishGuard-AI uses <strong>zero remote requests</strong>: analysis is 100% static, local, and completely undetectable to adversaries.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: URL SCANNER -->
+    <!-- =========================================================================
+         PAGE 2: SCAN URL PAGE
+         Safe/Not Safe Verdict, Detailed Reasons, Actionable Suggestions, Features
+         ========================================================================= -->
     <section id="tab-url" class="tab-pane">
-      <div class="scanner-container">
-        <div class="section-header">
-          <h2>URL Threat Scanner</h2>
-          <p>Inspects URL architecture and lexical characteristics locally without connecting to the remote host.</p>
+      <div class="scanner-page">
+        <div class="page-top-bar">
+          <button class="back-link-btn" onclick="switchTab('tab-home')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Home
+          </button>
+          <div class="page-step-indicator">Tool: URL Scanner</div>
         </div>
 
-        <div class="input-card">
+        <div class="page-header">
+          <h2>URL Threat Scanner</h2>
+          <p>Inspect any web link, domain, or address. PhishGuard-AI statically analyzes 16 structural threat markers without ever contacting the target host.</p>
+        </div>
+
+        <div class="scanner-box">
           <form id="url-scan-form">
             <div class="form-group">
-              <label for="url-input">Target URL</label>
+              <label for="url-input">Target Website URL to Inspect</label>
               <div class="input-with-action">
                 <input
                   type="text"
                   id="url-input"
                   name="url"
-                  placeholder="e.g., https://example.com/secure-login or http://192.168.1.1/update"
+                  placeholder="e.g. https://www.youtube.com/watch?v=... or http://192.168.1.100/paypal/login"
                   required
                   autocomplete="off"
                   spellcheck="false"
                 >
+                <button type="button" id="paste-url-btn" class="btn btn-secondary" title="Paste URL from clipboard">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                  Paste
+                </button>
+                <button type="button" id="clear-url-btn" class="btn btn-ghost" title="Clear input">Clear</button>
                 <button type="submit" id="url-submit-btn" class="btn btn-primary">
-                  <span class="btn-text">Analyze URL</span>
+                  <span class="btn-text">Scan URL</span>
                   <span class="btn-spinner hidden"></span>
                 </button>
               </div>
@@ -140,46 +245,59 @@
           </form>
 
           <div class="sample-chips-row">
-            <span class="chips-label">Quick Presets:</span>
+            <span class="chips-label">Try an example:</span>
             <div class="chips-container" id="url-sample-chips">
-              <!-- Dynamically populated via samples.js -->
+              <!-- Populated via samples.js -->
             </div>
           </div>
         </div>
 
-        <!-- Result Container -->
-        <div id="url-result-container" class="result-container hidden">
-          <!-- Populated by url_scanner.js -->
-        </div>
+        <!-- Result Container: Verdict Banner, Reasons, Suggestions, and Metrics -->
+        <div id="url-result-container" class="result-container hidden"></div>
       </div>
     </section>
 
-    <!-- TAB 3: MESSAGE SCANNER -->
+    <!-- =========================================================================
+         PAGE 3: SCAN MESSAGES / SMS PAGE
+         Safe/Not Safe Verdict, Linguistic Reasons, Actionable Suggestions
+         ========================================================================= -->
     <section id="tab-message" class="tab-pane">
-      <div class="scanner-container">
-        <div class="section-header">
-          <h2>Message Threat Scanner</h2>
-          <p>NLP & Recurrent Neural Network scanning for social engineering, artificial urgency, and financial coercion.</p>
+      <div class="scanner-page">
+        <div class="page-top-bar">
+          <button class="back-link-btn" onclick="switchTab('tab-home')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Home
+          </button>
+          <div class="page-step-indicator">Tool: SMS &amp; Message Scanner</div>
         </div>
 
-        <div class="input-card">
+        <div class="page-header">
+          <h2>SMS &amp; Message Threat Scanner</h2>
+          <p>Paste any suspicious SMS, WhatsApp message, or email body. The Recurrent Neural Network evaluates social engineering, panic urgency deadlines, and financial fraud markers.</p>
+        </div>
+
+        <div class="scanner-box">
           <form id="message-scan-form">
             <div class="form-group">
               <div class="label-with-counter">
-                <label for="message-input">Message / SMS Body</label>
+                <label for="message-input">Message / SMS Text Body</label>
                 <span id="char-counter" class="char-counter">0 / 5000 chars</span>
               </div>
               <textarea
                 id="message-input"
                 name="message"
                 rows="4"
-                placeholder="Paste the suspicious SMS, WhatsApp message, or email body here..."
+                placeholder="Paste the SMS text, WhatsApp message, or email body here..."
                 required
               ></textarea>
               <div class="form-actions">
+                <button type="button" id="paste-message-btn" class="btn btn-secondary" title="Paste text from clipboard">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                  Paste
+                </button>
                 <button type="button" id="clear-message-btn" class="btn btn-ghost">Clear</button>
                 <button type="submit" id="message-submit-btn" class="btn btn-primary">
-                  <span class="btn-text">Analyze Message</span>
+                  <span class="btn-text">Scan Message</span>
                   <span class="btn-spinner hidden"></span>
                 </button>
               </div>
@@ -187,162 +305,107 @@
           </form>
 
           <div class="sample-chips-row">
-            <span class="chips-label">Quick Presets:</span>
+            <span class="chips-label">Try an example:</span>
             <div class="chips-container" id="message-sample-chips">
-              <!-- Dynamically populated via samples.js -->
+              <!-- Populated via samples.js -->
             </div>
           </div>
         </div>
 
-        <!-- Result Container -->
-        <div id="message-result-container" class="result-container hidden">
-          <!-- Populated by message_scanner.js -->
-        </div>
+        <!-- Result Container: Verdict Banner, Reasons, Suggestions, and Metrics -->
+        <div id="message-result-container" class="result-container hidden"></div>
       </div>
     </section>
 
-    <!-- TAB 4: MODEL PERFORMANCE -->
-    <section id="tab-metrics" class="tab-pane">
-      <div class="metrics-container">
-        <div class="section-header">
-          <h2>Model Evaluation & Performance</h2>
-          <p>Verified test-set benchmark evaluation metrics loaded directly from model training artifacts.</p>
-        </div>
-
-        <div class="metrics-subnav">
-          <button class="subnav-btn active" data-subtab="metrics-url">URL ANN Pipeline</button>
-          <button class="subnav-btn" data-subtab="metrics-message">Message RNN Pipeline</button>
-        </div>
-
-        <div id="metrics-url" class="subtab-pane active">
-          <!-- Populated by metrics.js -->
-        </div>
-
-        <div id="metrics-message" class="subtab-pane">
-          <!-- Populated by metrics.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: SCAN HISTORY -->
+    <!-- =========================================================================
+         PAGE 4: HISTORY PAGE
+         Audit Trail of Past Scans, Stats, and Quick Re-scan
+         ========================================================================= -->
     <section id="tab-history" class="tab-pane">
-      <div class="history-container">
-        <div class="section-header-flex">
+      <div class="scanner-page history-page">
+        <div class="page-top-bar">
+          <button class="back-link-btn" onclick="switchTab('tab-home')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Home
+          </button>
+          <div class="page-step-indicator">Audit Trail: Local Records</div>
+        </div>
+
+        <div class="page-header history-header">
           <div>
-            <h2>Local Scan Audit History</h2>
-            <p>Recent threat analyses recorded in the local SQLite database.</p>
+            <h2>Scan Audit History</h2>
+            <p>Review recent URL and SMS scans recorded locally in your database. All scans remain strictly confidential.</p>
           </div>
-          <button id="refresh-history-btn" class="btn btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            Refresh
+          <button type="button" id="refresh-history-btn" class="btn btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Refresh History
           </button>
         </div>
 
-        <div class="history-card">
-          <div class="history-table-wrapper">
-            <table class="history-table">
+        <!-- History Summary Stat Cards -->
+        <div class="history-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Scans Recorded</div>
+            <div class="stat-value" id="stat-total-scans">0</div>
+          </div>
+          <div class="stat-card safe-stat">
+            <div class="stat-label">Verified Safe</div>
+            <div class="stat-value" id="stat-safe-scans">0</div>
+          </div>
+          <div class="stat-card threat-stat">
+            <div class="stat-label">Threats &amp; Suspicious</div>
+            <div class="stat-value" id="stat-threat-scans">0</div>
+          </div>
+        </div>
+
+        <!-- Scans Table Wrapper -->
+        <div class="history-table-card">
+          <div class="table-responsive">
+            <table class="history-table" id="history-table">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Input Preview</th>
-                  <th>Risk Tier</th>
-                  <th>Threat Prob</th>
-                  <th>Confidence</th>
-                  <th>Timestamp</th>
+                  <th style="width: 70px;">ID</th>
+                  <th style="width: 110px;">Type</th>
+                  <th>Input Content Preview</th>
+                  <th style="width: 140px;">Verdict</th>
+                  <th style="width: 110px;">Threat Prob</th>
+                  <th style="width: 100px;">Confidence</th>
+                  <th style="width: 170px;">Timestamp</th>
+                  <th style="width: 100px; text-align: center;">Action</th>
                 </tr>
               </thead>
               <tbody id="history-tbody">
-                <tr><td colspan="7" class="text-center">Loading audit history...</td></tr>
+                <tr>
+                  <td colspan="8" class="text-center" style="padding: 2.5rem; color: var(--text-dim);">
+                    Loading scan audit trail...
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- TAB 6: ARCHITECTURE & ABOUT -->
-    <section id="tab-about" class="tab-pane">
-      <div class="about-container">
-        <div class="section-header">
-          <h2>System Architecture & Security Philosophy</h2>
-          <p>Technical blueprint, zero-execution isolation, and threat modeling guidelines.</p>
-        </div>
-
-        <div class="about-grid">
-          <div class="about-card">
-            <h3>Architecture Topology</h3>
-            <div class="code-block">
-<pre>
-┌─────────────────────────────────────────────────────────────┐
-│                      Vanilla Frontend                       │
-│             (HTML5, CSS3, ES6 Vanilla JavaScript)           │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ REST API JSON
-┌──────────────────────────────▼──────────────────────────────┐
-│                       FastAPI Backend                       │
-│    ├── LifeSpan Singleton Model Loader                      │
-│    ├── Risk Engine (Low &lt;0.40 | Med 0.40-0.69 | High &gt;=0.70)│
-│    ├── Heuristic Explanation Engine                         │
-│    └── SQLite Audit Store                                   │
-└───────────────┬─────────────────────────────┬───────────────┘
-                │                             │
-┌───────────────▼─────────────┐ ┌─────────────▼───────────────┐
-│     Pipeline A: URL ANN     │ │    Pipeline B: Message RNN   │
-│ 16 Static Numerical Feats   │ │ Text Cleaning & Lowercase   │
-│ StandardScaler (Joblib)     │ │ Vocabulary Tokenizer (PKL)  │
-│ ANN (Dense-Dropout-Sigmoid) │ │ SimpleRNN (Embedding-Dense) │
-└─────────────────────────────┘ └─────────────────────────────┘
-</pre>
-            </div>
-          </div>
-
-          <div class="about-card">
-            <h3>Zero-Contact URL Safety</h3>
-            <p>
-              Conventional security products often trigger automated headless browsers or HTTP probes to verify suspicious links. In adversarial phishing campaigns, visiting a link can:
-            </p>
-            <ul>
-              <li>Confirm valid target email/phone numbers to the attacker</li>
-              <li>Trigger one-time credential burn tokens</li>
-              <li>Expose server IP or internal reconnaissance data</li>
-            </ul>
-            <p>
-              <strong>PhishGuard-AI strictly enforces zero-network URL inspection.</strong> The application only evaluates mathematical, lexical, and structural features extracted on the server.
-            </p>
-          </div>
-
-          <div class="about-card">
-            <h3>Limitations & Disclaimer</h3>
-            <ul>
-              <li><strong>Evolving Phishing Tactics:</strong> Sophisticated attackers continuously modify URL obfuscation and SMS phrasing to bypass classifiers.</li>
-              <li><strong>Contextual Ambiguity:</strong> High-risk keywords (e.g., "bank", "login") in benign enterprise notifications can occasionally trigger Medium risk ratings.</li>
-              <li><strong>Risk Assessment Only:</strong> Output scores represent statistical threat probabilities, not legal or forensic guarantees.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
-  <!-- Footer -->
+  <!-- Clean Minimal Footer -->
   <footer class="app-footer">
     <div class="footer-container">
-      <div>
-        <strong>PhishGuard-AI</strong> &bull; Production Cybersecurity Threat Intelligence
+      <div class="footer-brand">
+        <span class="footer-logo">PhishGuard-AI</span>
+        <span class="footer-sep">&bull;</span>
+        <span>Zero-Contact Cyber Defense Platform</span>
       </div>
       <div class="footer-note">
-        Static Zero-Contact Analysis &bull; Local ML Inference &bull; Python 3.11
+        Static Feature ANN &bull; Sequence NLP SimpleRNN &bull; 100% Client Privacy
       </div>
     </div>
   </footer>
 
-  <!-- Scripts (Order: samples -> scanners -> metrics -> history -> app) -->
+  <!-- Scripts -->
   <script src="/static/js/samples.js"></script>
   <script src="/static/js/url_scanner.js"></script>
   <script src="/static/js/message_scanner.js"></script>
-  <script src="/static/js/metrics.js"></script>
   <script src="/static/js/history.js"></script>
   <script src="/static/js/app.js"></script>
 </body>

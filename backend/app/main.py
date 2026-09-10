@@ -12,7 +12,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from backend.app.config import APP_NAME, APP_VERSION, APP_DESCRIPTION, FRONTEND_DIR
+from backend.app.config import APP_NAME, APP_VERSION, APP_DESCRIPTION, FRONTEND_DIR, PROJECT_ROOT
 from backend.app.api.endpoints import router as api_router
 from backend.app.services.model_loader import ModelManager
 from backend.app.services.history_service import init_db
@@ -120,6 +120,10 @@ if static_dir.exists():
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/home", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/url", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/message", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/history", methods=["GET", "HEAD"], include_in_schema=False)
 async def serve_index():
     """Serve the frontend SPA entry point."""
     for candidate in [
@@ -130,3 +134,4 @@ async def serve_index():
         if candidate.exists():
             return FileResponse(str(candidate))
     return JSONResponse({"status": "Frontend not found"}, status_code=404)
+

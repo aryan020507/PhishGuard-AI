@@ -14,6 +14,20 @@ def explain_url_threats(url: str, features: Dict[str, float]) -> List[HeuristicI
     """
     indicators = []
 
+    # 0. Verified Authority Domain Check
+    try:
+        from backend.app.services.trusted_domains import is_authentic_trusted_url
+        if is_authentic_trusted_url(url, features):
+            indicators.append(HeuristicIndicator(
+                code="URL_TRUSTED_DOMAIN",
+                name="Verified Authority Domain",
+                description="The destination host matches a globally recognized, authentic web service with standard syntax.",
+                severity="info",
+                matched=True
+            ))
+    except Exception:
+        pass
+
     # 1. IP as hostname
     if features.get("has_ip", 0.0) == 1.0:
         indicators.append(HeuristicIndicator(
@@ -109,7 +123,7 @@ def explain_url_threats(url: str, features: Dict[str, float]) -> List[HeuristicI
         ))
 
     # If no negative indicators fired
-    if not indicators:
+    if not any(ind.severity in ("danger", "warning") for ind in indicators):
         indicators.append(HeuristicIndicator(
             code="URL_BENIGN_STRUCTURE",
             name="Clean Structural Syntax",

@@ -112,7 +112,9 @@ def extract_url_features(url: str) -> Dict[str, float]:
 
     # 12. num_subdomains
     if hostname:
-        parts = hostname.split(".")
+        # Strip standard 'www.' prefix so apex and www variants have consistent subdomain counts
+        clean_hostname = re.sub(r"^www\.", "", hostname)
+        parts = clean_hostname.split(".")
         # Standard domain like example.com has 2 parts (0 subdomains).
         # foo.example.com has 3 parts (1 subdomain).
         num_subdomains = float(max(0, len(parts) - 2))

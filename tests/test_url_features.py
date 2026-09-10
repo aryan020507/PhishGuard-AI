@@ -73,3 +73,31 @@ def test_entropy_calculation():
     assert calculate_entropy("aaaaaaa") == 0.0
     # Diverse string has higher entropy
     assert calculate_entropy("a1b2c3d4e5!@#$%^") > 3.0
+
+
+def test_subdomain_normalization_www():
+    feats_www = extract_url_features("https://www.youtube.com/")
+    feats_apex = extract_url_features("https://youtube.com/")
+    feats_deep = extract_url_features("https://login.secure.example.com/")
+
+    # 'www.' should not be counted as a suspicious nested subdomain
+    assert feats_www["num_subdomains"] == 0.0
+    assert feats_apex["num_subdomains"] == 0.0
+    assert feats_deep["num_subdomains"] == 2.0
+
+
+def test_trusted_domains_evaluation():
+    from backend.app.services.trusted_domains import is_authentic_trusted_url, is_trusted_domain
+
+    assert is_trusted_domain("youtube.com") is True
+    assert is_trusted_domain("www.youtube.com") is True
+    assert is_trusted_domain("youtu.be") is True
+    assert is_trusted_domain("fake-youtube.com") is False
+    assert is_trusted_domain("youtube.com.malicious.net") is False
+
+    clean_features = extract_url_features("https://www.youtube.com/watch?v=12345")
+    assert is_authentic_trusted_url("https://www.youtube.com/watch?v=12345", clean_features) is True
+
+    # Spoofed userinfo with @ symbol should not be trusted
+    spoofed_features = extract_url_features("http://youtube.com@attacker.com/login")
+    assert is_authentic_trusted_url("http://youtube.com@attacker.com/login", spoofed_features) is False
